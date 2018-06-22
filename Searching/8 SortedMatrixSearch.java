@@ -41,6 +41,11 @@ public class SortedMatrixSearch {
         return false;
     }
 
+     public static boolean searchSortedMatrix3(int [][] matrix,int key,int startRow,int startCol, int endRow, int endCol){
+        
+        return false;
+    }
+    
     public static void main(String args []){
         int [][] matrix = {{1,2,3},{4,5,6},{7,8,9}};
         int key=7;
