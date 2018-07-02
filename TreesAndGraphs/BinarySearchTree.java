@@ -1,5 +1,7 @@
 package Trees;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 public class BinarySearchTree {
@@ -180,21 +182,23 @@ public class BinarySearchTree {
         if(root==null)
             return;
 
-        Node curr=root;
         Stack<Node> stack = new Stack<Node>();
-        stack.add(curr);
-        while (stack.peek().left != null) {
-            stack.push(stack.peek().left);
+        Node curr=root;
+        while (curr != null) {
+            stack.push(curr);
+            curr=curr.left;
         }
         while (!stack.isEmpty()) {
             curr = stack.pop();
             System.out.println(curr.value);
+
             if (curr.right != null){
-                stack.push(curr.right);
-
-                while (stack.peek().left != null)
-                    stack.push(stack.peek().left);
-
+                curr=curr.right;
+                
+                while (curr != null){
+                    stack.push(curr.left);
+                    curr=curr.left;
+                }
             }
         }
 
@@ -202,7 +206,19 @@ public class BinarySearchTree {
     }
 
     public void preOrderTraversal(Node root){
+        if(root==null)
+            return;
 
+        Stack<Node> stack = new Stack<Node>();
+        stack.push(root);
+        while(!stack.isEmpty()){
+            Node temp=stack.pop();
+            System.out.println(temp.value);
+            if(temp.right!=null)
+                stack.push(temp.right);
+            if(temp.left!=null)
+                stack.push(temp.left);
+        }
     }
 
     public void postOrderTraversal(Node root){
@@ -210,7 +226,28 @@ public class BinarySearchTree {
     }
 
     public void levelOrderTraversal(Node root){
+        if(root==null)
+            return;
 
+        Queue<Node> q1 = new LinkedList<Node>();
+        Queue<Node> q2 = new LinkedList<Node>();
+
+        q1.add(root);
+
+        while (true) {
+            while (!q1.isEmpty()) {
+                Node temp = q1.poll();
+                System.out.println(temp.value);
+
+                if (temp.left != null)
+                    q2.add(temp.left);
+                if (temp.right != null)
+                    q2.add(temp.right);
+            }
+            if(q2.isEmpty())
+                break;
+            q1.addAll(q2);
+        }
     }
 
     public static void main(String args[]){
