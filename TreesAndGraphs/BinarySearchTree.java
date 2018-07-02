@@ -1,5 +1,7 @@
 package Trees;
 
+import java.util.Stack;
+
 public class BinarySearchTree {
     Node root;
 
@@ -174,19 +176,40 @@ public class BinarySearchTree {
         return false;
     }
 
-    public void inOrderTraversal(){
-        
+    public void inOrderTraversal(Node root){
+        if(root==null)
+            return;
+
+        Node curr=root;
+        Stack<Node> stack = new Stack<Node>();
+        stack.add(curr);
+        while (stack.peek().left != null) {
+            stack.push(stack.peek().left);
+        }
+        while (!stack.isEmpty()) {
+            curr = stack.pop();
+            System.out.println(curr.value);
+            if (curr.right != null){
+                stack.push(curr.right);
+
+                while (stack.peek().left != null)
+                    stack.push(stack.peek().left);
+
+            }
+        }
+
+
     }
 
-    public void preOrderTraversal(){
+    public void preOrderTraversal(Node root){
 
     }
 
-    public void postOrderTraversal(){
+    public void postOrderTraversal(Node root){
 
     }
 
-    public void levelOrderTraversal(){
+    public void levelOrderTraversal(Node root){
 
     }
 
