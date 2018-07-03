@@ -277,6 +277,14 @@ public class BinarySearchTree {
         System.out.println("");
     }
 
+    public int maxElement(Node root){
+        if(root==null)
+            return Integer.MIN_VALUE;
+
+        int max=Math.max(maxElement(root.left),maxElement(root.right));
+        return Math.max(max,root.value);
+    }
+
     public static void main(String args[]) throws TreeException {
 //        Node n1 = new Node(1);
 //        Node n2 = new Node(2);
@@ -303,7 +311,7 @@ public class BinarySearchTree {
         bst.add(1);
         bst.add(3);
 
-        bst.levelOrderTraversal(bst.root);
+        /*bst.levelOrderTraversal(bst.root);
         bst.remove(3);
         bst.levelOrderTraversal(bst.root);
         System.out.println(bst.search(3));
@@ -314,6 +322,10 @@ public class BinarySearchTree {
         bst.preOrderTraversal(bst.root);
         System.out.println("PostOrder Traversal");
         bst.postOrderTraversal(bst.root);
+        */
+
+        System.out.println(bst.maxElement(bst.root));
+
 
     }
 
