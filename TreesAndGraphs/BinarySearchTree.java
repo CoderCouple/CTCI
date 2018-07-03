@@ -33,9 +33,14 @@ public class BinarySearchTree {
             }
         }
 
-        if(isLeftChild)
+        if(isLeftChild){
             prev.left=n;
-        else prev.right=n;
+            n.parent=prev;
+        }
+        else{
+            prev.right=n;
+            n.parent=prev;
+        }
 
     }
 
@@ -190,18 +195,18 @@ public class BinarySearchTree {
         }
         while (!stack.isEmpty()) {
             curr = stack.pop();
-            System.out.println(curr.value);
+            System.out.print(curr.value + " ");
 
             if (curr.right != null){
                 curr=curr.right;
-                
+
                 while (curr != null){
-                    stack.push(curr.left);
+                    stack.push(curr);
                     curr=curr.left;
                 }
             }
         }
-
+        System.out.println("");
 
     }
 
@@ -213,16 +218,36 @@ public class BinarySearchTree {
         stack.push(root);
         while(!stack.isEmpty()){
             Node temp=stack.pop();
-            System.out.println(temp.value);
+            System.out.print(temp.value+" ");
             if(temp.right!=null)
                 stack.push(temp.right);
             if(temp.left!=null)
                 stack.push(temp.left);
         }
+        System.out.println("");
     }
 
     public void postOrderTraversal(Node root){
+        if(root==null)
+            return;
 
+        Stack<Node> stack1 = new Stack<Node>();
+        Stack<Node> stack2 = new Stack<Node>();
+
+        stack1.push(root);
+        while(!stack1.isEmpty()){
+            Node temp=stack1.pop();
+            stack2.push(temp);
+            if (temp.left!=null)
+                stack1.push(temp.left);
+            if(temp.right!=null)
+                stack1.push(temp.right);
+        }
+
+        while (!stack2.isEmpty())
+            System.out.print(stack2.pop().value+" ");
+
+        System.out.println("");
     }
 
     public void levelOrderTraversal(Node root){
@@ -230,28 +255,65 @@ public class BinarySearchTree {
             return;
 
         Queue<Node> q1 = new LinkedList<Node>();
-        Queue<Node> q2 = new LinkedList<Node>();
-
+        Node marker = new Node(-1);
         q1.add(root);
+        q1.add(marker);
 
-        while (true) {
-            while (!q1.isEmpty()) {
-                Node temp = q1.poll();
-                System.out.println(temp.value);
+        while (!q1.isEmpty()) {
+            Node temp = q1.poll();
+            if (temp.value == -1) {
+                System.out.println("");
+                if (!q1.isEmpty())
+                    q1.add(marker);
+            } else {
+                System.out.print(temp.value);
 
                 if (temp.left != null)
-                    q2.add(temp.left);
+                    q1.add(temp.left);
                 if (temp.right != null)
-                    q2.add(temp.right);
+                    q1.add(temp.right);
             }
-            if(q2.isEmpty())
-                break;
-            q1.addAll(q2);
         }
+        System.out.println("");
     }
 
-    public static void main(String args[]){
+    public static void main(String args[]) throws TreeException {
+//        Node n1 = new Node(1);
+//        Node n2 = new Node(2);
+//        Node n3 = new Node(3);
+//        Node n4 = new Node(4);
+//        Node n5 = new Node(5);
+//        Node n6 = new Node(6);
+//        Node n7 = new Node(7);
+//
+//        n4.right=n6;
+//        n6.left=n5;
+//        n6.right=n7;
+//        n4.left=n2;
+//        n2.left=n1;
+//        n2.right=n3;
 
+
+        BinarySearchTree bst = new BinarySearchTree();
+        bst.add(4);
+        bst.add(6);
+        bst.add(5);
+        bst.add(7);
+        bst.add(2);
+        bst.add(1);
+        bst.add(3);
+
+        bst.levelOrderTraversal(bst.root);
+        bst.remove(3);
+        bst.levelOrderTraversal(bst.root);
+        System.out.println(bst.search(3));
+        System.out.println(bst.search(5));
+        System.out.println("InOrder Traversal");
+        bst.inOrderTraversal(bst.root);
+        System.out.println("PreOrder Traversal");
+        bst.preOrderTraversal(bst.root);
+        System.out.println("PostOrder Traversal");
+        bst.postOrderTraversal(bst.root);
 
     }
 
