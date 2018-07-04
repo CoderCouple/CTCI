@@ -280,9 +280,28 @@ public class BinarySearchTree {
     public int maxElement(Node root){
         if(root==null)
             return Integer.MIN_VALUE;
+        return Math.max(Math.max(maxElement(root.left),maxElement(root.right)),root.value);
+    }
 
-        int max=Math.max(maxElement(root.left),maxElement(root.right));
-        return Math.max(max,root.value);
+    public int maxElementRec(Node root){
+        int result = Integer.MIN_VALUE;
+        if (root==null)
+            return result;
+
+        Queue<Node> q = new LinkedList<Node>();
+        q.add(root);
+        while (!q.isEmpty()){
+            Node temp= q.remove();
+            if(temp.value>result)
+                result=temp.value;
+
+            if(temp.left!=null)
+                q.add(temp.left);
+
+            if(temp.right!=null)
+                q.add(temp.right);
+        }
+        return result;
     }
 
     public static void main(String args[]) throws TreeException {
@@ -325,6 +344,7 @@ public class BinarySearchTree {
         */
 
         System.out.println(bst.maxElement(bst.root));
+        System.out.println(bst.maxElementRec(bst.root));
 
 
     }
