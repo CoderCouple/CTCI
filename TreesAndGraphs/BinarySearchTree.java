@@ -1,6 +1,6 @@
 package Trees;
 
-import java.util.*;
+        import java.util.*;
 
 public class BinarySearchTree {
     Node root;
@@ -455,6 +455,58 @@ public class BinarySearchTree {
     }
 
 
+    public void printTree(Node root){
+        if (root==null)
+            return;
+        List<Integer> list = new ArrayList<Integer>();
+        printAllTreePaths(root,list);
+    }
+
+    public void printAllTreePaths(Node root, List<Integer> list){
+        if(root==null)
+            return;
+
+        if(root.right==null && root.left==null){
+            list.add(root.value);
+            for(int i: list)
+                System.out.print(i);
+            System.out.println("");
+            return;
+        }
+
+            list.add(root.value);
+            List<Integer> newList = new ArrayList<Integer>();
+            newList.addAll(list);
+            printAllTreePaths(root.left, list);
+            printAllTreePaths(root.right, newList);
+    }
+
+
+    public boolean pathWithASum(Node root,int sum){
+        if(root==null)
+            return false;
+        return getPathWithASum(root,sum);
+    }
+
+    public boolean getPathWithASum(Node root,int sum){
+        if (root==null && sum==0)
+        return true;
+
+        if(root==null && sum!=0)
+            return false;
+
+        if(getPathWithASum(root.left,sum-root.value))
+            return true;
+        else  return false||getPathWithASum(root.right,sum-root.value);
+    }
+
+    public int sumOfAllNodes(Node root){
+        if(root==null)
+            return 0;
+
+        return root.value+sumOfAllNodes(root.left)+sumOfAllNodes(root.right);
+    }
+
     public static void main(String args[]) throws TreeException {
 //        Node n1 = new Node(1);
 //        Node n2 = new Node(2);
@@ -528,6 +580,9 @@ public class BinarySearchTree {
         //System.out.println("Are the two binary trees same : "+bst.isEqualTree(bst.root,bst.root));
 
         //System.out.println("Diameter of the binary tree : "+bst.getTotalDiameter(bst.root));
+
+        //bst.printTree(bst.root);
+        //System.out.println(bst.pathWithASum(bst.root,16));
 
     }
 
