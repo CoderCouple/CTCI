@@ -1,8 +1,6 @@
 package Trees;
 
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 public class BinarySearchTree {
     Node root;
@@ -304,6 +302,159 @@ public class BinarySearchTree {
         return result;
     }
 
+    public boolean searchInTree(Node root,int key){
+        if(root==null)
+            return false;
+
+        if(root.value==key)
+            return true;
+
+        return searchInTree(root.left,key) || searchInTree(root.right,key);
+    }
+
+    public boolean searchInTreeRec(Node root,int key){
+        if(root==null)
+            return false;
+
+        Queue<Node> q = new LinkedList<Node>();
+        q.add(root);
+
+        while(!q.isEmpty()){
+            Node temp = q.poll();
+            if(temp.value==key)
+                return true;
+
+            if(temp.left!=null)
+                q.add(temp.left);
+
+            if(temp.left!=null)
+                q.add(temp.right);
+        }
+
+        return false;
+    }
+
+    public int getSizeOfBinaryTreeRec(Node root){
+        if(root==null)
+            return 0;
+
+        return getSizeOfBinaryTreeRec(root.left)+getSizeOfBinaryTreeRec(root.right)+1;
+    }
+
+    public int getSizeOfBinaryTree(Node root){
+        int counter=0;
+        if(root==null)
+            return counter;
+
+        Queue<Node> q = new LinkedList<Node>();
+        q.add(root);
+        while(!q.isEmpty()){
+            Node temp=q.poll();
+            counter++;
+
+            if(temp.left!=null)
+                q.add(temp.left);
+
+            if(temp.right!=null)
+                q.add(temp.right);
+        }
+
+
+        return counter;
+    }
+
+
+    public int getMaxDepthtOfTreeRec(Node root){
+        if(root==null)
+            return 0;
+        return Math.max(getMaxDepthtOfTreeRec(root.left),getMaxDepthtOfTreeRec(root.right))+1;
+    }
+
+    public int getMinDepthtOfTreeRec(Node root){
+        if(root==null)
+            return 0;
+
+        return Math.min(getMinDepthtOfTreeRec(root.left),getMinDepthtOfTreeRec(root.right))+1;
+    }
+    public Node getDeepestNode(Node root){
+        Node result=null;
+        if(root==null)
+            return result;
+
+        Queue<Node> q = new LinkedList<Node>();
+        q.add(root);
+        while (!q.isEmpty()){
+            Node temp = q.poll();
+            if(temp.left!=null)
+                q.add(temp.left);
+
+            if(temp.right!=null)
+                q.add(temp.right);
+            result=temp;
+        }
+        return result;
+    }
+
+    public void getLeafNodes(Node root){
+
+        if(root==null)
+            return;
+
+        Queue<Node> q = new LinkedList<Node>();
+        q.add(root);
+        while (!q.isEmpty()){
+            Node temp = q.poll();
+
+            if(temp.left==null && temp.right==null)
+                System.out.println(temp.value);
+
+            if(temp.left!=null)
+                q.add(temp.left);
+
+            if(temp.right!=null)
+                q.add(temp.right);
+
+        }
+    }
+
+    public boolean isEqualTree(Node root1, Node root2){
+        if(root1==null && root2==null)
+            return true;
+
+        if (root1==null || root2 == null)
+            return false;
+
+        if(root1.value!=root2.value)
+            return false;
+
+        return isEqualTree(root1.left,root2.left) && isEqualTree(root1.right,root2.right);
+    }
+
+
+    public int getDiameterOfTree(Node root,List<Integer> list){
+        if(root==null)
+            return 0;
+
+        int left = getDiameterOfTree(root.left,list);
+        int right = getDiameterOfTree(root.right,list);
+        list.add(left);
+        list.add(right);
+        return left+right+1;
+    }
+
+    public int getTotalDiameter(Node root){
+        int result=Integer.MIN_VALUE;
+        List<Integer> list = new ArrayList<Integer>();
+        list.add(getDiameterOfTree(root,list));
+
+        for(int i : list){
+            if(i>result)
+                result=i;
+        }
+        return result;
+    }
+
+
     public static void main(String args[]) throws TreeException {
 //        Node n1 = new Node(1);
 //        Node n2 = new Node(2);
@@ -329,6 +480,13 @@ public class BinarySearchTree {
         bst.add(2);
         bst.add(1);
         bst.add(3);
+        bst.add(10);
+
+//        BinarySearchTree bst2 = new BinarySearchTree();
+//        bst2.add(4);
+//        bst2.add(6);
+//        bst2.add(5);
+//        bst2.add(7);
 
         /*bst.levelOrderTraversal(bst.root);
         bst.remove(3);
@@ -343,9 +501,33 @@ public class BinarySearchTree {
         bst.postOrderTraversal(bst.root);
         */
 
-        System.out.println(bst.maxElement(bst.root));
-        System.out.println(bst.maxElementRec(bst.root));
 
+        //System.out.println(bst.maxElement(bst.root));
+        //System.out.println(bst.maxElementRec(bst.root));
+//        int key=3;
+//        System.out.println("Is Element Present "+ key +" ? : "+bst.searchInTree(bst.root,key));
+//        key=9;
+//        System.out.println("Is Element Present "+ key+ " ? : "+bst.searchInTree(bst.root,key));
+//
+//
+//        key=3;
+//        System.out.println("Is Element Present "+ key +" ? : "+bst.searchInTreeRec(bst.root,key));
+//        key=9;
+//        System.out.println("Is Element Present "+ key +" ? : "+bst.searchInTreeRec(bst.root,key));
+
+
+//        System.out.println("Size of the Binary Tree is : "+ bst.getSizeOfBinaryTreeRec(bst.root));
+//        System.out.println("Size of the Binary Tree is : "+ bst.getSizeOfBinaryTree(bst.root));
+
+//          System.out.println("Max Depth of the Tree : "+bst.getMaxDepthtOfTreeRec(bst.root));
+//          System.out.println("Min Depth of the Tree : "+bst.getMinDepthtOfTreeRec(bst.root));
+
+        //System.out.println("Deepest node of the Tree is : "+bst.getDeepestNode(bst.root).value);
+        //bst.getLeafNodes(bst.root);
+
+        //System.out.println("Are the two binary trees same : "+bst.isEqualTree(bst.root,bst.root));
+
+        //System.out.println("Diameter of the binary tree : "+bst.getTotalDiameter(bst.root));
 
     }
 
