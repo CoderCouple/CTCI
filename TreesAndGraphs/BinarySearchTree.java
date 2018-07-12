@@ -507,6 +507,17 @@ public class BinarySearchTree {
         return root.value+sumOfAllNodes(root.left)+sumOfAllNodes(root.right);
     }
 
+    public void getMirrorOfThe(Node root){
+        if(root==null)
+            return;
+
+        Node temp=root.left;
+        root.left=root.right;
+        root.right=temp;
+        getMirrorOfThe(root.left);
+        getMirrorOfThe(root.right);
+    }
+
     public static void main(String args[]) throws TreeException {
 //        Node n1 = new Node(1);
 //        Node n2 = new Node(2);
