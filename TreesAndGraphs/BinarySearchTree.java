@@ -507,16 +507,82 @@ public class BinarySearchTree {
         return root.value+sumOfAllNodes(root.left)+sumOfAllNodes(root.right);
     }
 
-    public void getMirrorOfThe(Node root){
+    public void getMirrorOfTree(Node root){
         if(root==null)
             return;
 
         Node temp=root.left;
         root.left=root.right;
         root.right=temp;
-        getMirrorOfThe(root.left);
-        getMirrorOfThe(root.right);
+        getMirrorOfTree(root.left);
+        getMirrorOfTree(root.right);
     }
+
+    public boolean isMirror(Node root1, Node root2){
+        if(root1==null && root2==null)
+            return true;
+
+        if(root1==null || root2==null)
+            return false;
+
+        if(root1.value!=root2.value)
+            return false;
+        else return isMirror(root1.left,root2.right) && isMirror(root1.right,root2.left);
+    }
+
+
+    public Node getBinaryTreeFromInOrderAndPreOrder(int[] inorder, int[] preorder) {
+        if(inorder.length==0 || preorder.length==0)
+            return null;
+        if(inorder==null || preorder==null)
+            return null;
+        return buildBinaryTreeFromInOrderAndPreOrder(0,inorder.length-1,inorder,0,preorder.length-1,preorder);
+    }
+
+    public Node buildBinaryTreeFromInOrderAndPreOrder(int inStart, int inEnd,int[] inorder,int preStart, int preEnd,int[] preorder){
+        if(inStart>inEnd || preStart>preEnd)
+            return null;
+        Node root =  new Node(preorder[preStart]);
+        int index=inStart;
+        for(int i=inStart; i<=inEnd;i++)
+            if(inorder[i]==root.value){
+                index=i;
+                break;
+            }
+
+        root.left= buildBinaryTreeFromInOrderAndPreOrder(inStart,index-1,inorder,preStart+1,preStart+(index-inStart),preorder);
+        root.right= buildBinaryTreeFromInOrderAndPreOrder(index+1,inEnd,inorder,preStart+(index-inStart)+1,preorder.length-1,preorder);
+        return root;
+    }
+
+
+
+    public Node getBinaryTreeFromInOrderAndPostOrder(int[] inorder, int[] postorder) {
+        if(inorder.length==0 || postorder.length==0)
+            return null;
+        if(inorder==null || postorder==null)
+            return null;
+        return buildBinaryTreeFromInOrderAndPostOrder(0,inorder.length-1,inorder,0,postorder.length-1,postorder);
+    }
+
+    public Node buildBinaryTreeFromInOrderAndPostOrder(int inStart,int inEnd,int[] inorder,int postStart,int postEnd,int[] postorder){
+        if(inStart>inEnd || postStart>postEnd)
+            return null;
+        Node root = new Node(postorder[postEnd]); // Changed here to make it work for the InOrder & PostOrder
+        int index=inStart;
+        for(int i=inStart;i<=inEnd;i++)
+            if(inorder[i]==root.value){
+                index=i;
+                break;
+            }
+
+        root.left=buildBinaryTreeFromInOrderAndPostOrder(inStart,index-1,inorder,postStart,postStart+(index-inStart)-1,postorder);
+        root.right=buildBinaryTreeFromInOrderAndPostOrder(index+1,inEnd,inorder,postStart+(index-inStart),postEnd-1,postorder);
+        return root;
+    }
+
+
+
 
     public static void main(String args[]) throws TreeException {
 //        Node n1 = new Node(1);
